@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 chat-container">
+                <div id="chatLog" class="border rounded p-3 mb-4"></div>
+                <div class="input-container">
+                    <input id="userInput" type="text" class="form-control" placeholder="Ketikan pesan Anda di sini..." />
+                    <button id="sendButton" class="send-button"></button>
+                </div>
+            </div>
+        </div>
+        <a href="/logout" class="logout-button btn btn-light">Keluar</a>
+    </div>
+    <script src="/static/schedule.js"></script>
+</body>
+</html>

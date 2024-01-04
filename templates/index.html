@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <style>
+        body {
+            background: linear-gradient(90deg, #000000 0%, #1a1a1a 35%, #121212 100%);
+            font-family: 'Orbitron', sans-serif;
+            color: #b3b3b3;
+        }
+
+        .card {
+            animation: fadeInUp 1s ease-out;
+            border: 2px solid #1a1a1a;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+        }
+
+        .card-header,
+        .btn {
+            background: linear-gradient(90deg, #000000 0%, #1a1a1a 35%, #121212 100%);
+        }
+
+        .form-group label,
+        .form-group input {
+            color: white;
+        }
+
+        .form-group input:focus {
+            color: black;
+        }
+
+        .form-control {
+            color: black !important;
+        }
+
+        .btn {
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #1a1a1a;
+            color: white;
+            border: 2px solid #808080;
+        }
+
+        .btn-primary:hover {
+            background-color: #008CBA;
+            color: #808080;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .typing-text {
+            display: inline-block;
+            color: white;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 20px;
+            background-color: white;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .alert-container {
+            margin-top: 10px;
+        }
+
+        .alert {
+            display: none;
+            padding: 15px;
+            border: 1px solid #1a1a1a;
+            border-radius: 5px;
+            color: white;
+            background-color: #1a1a1a;
+            margin-top: 10px;
+        }
+    </style>
+    <title>Login</title>
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg p-3 mb-5 rounded">
+                    <div class="card-header text-white text-center">
+                        <h3><i class="fas fa-rocket"></i> <span class="typing-text"></span><span
+                                class="cursor"></span></h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="loginForm" action="/login" method="post">
+                            <div class="form-group">
+                                <label for="username"><i class="fas fa-user-astronaut"></i> Username:</label>
+                                <input type="text" class="form-control" id="username" name="username" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="password"><i class="fas fa-fingerprint"></i> Password:</label>
+                                <input type="password" class="form-control" id="password" name="password" required />
+                            </div>
+
+                            <div class="form-group">
+                                <div class="g-recaptcha" data-sitekey="6Ld41UUpAAAAAOTpQ5vkc6wppvOvsY_gMcnfBIIi"></div>
+                            </div>
+
+                            <div class="alert-container">
+                                <div class="alert" id="recaptchaAlert">
+                                    Hayoo, kamu bukan robot kan? Klik captcha dulu ya sebelum login!
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block"><i
+                                    class="fas fa-space-shuttle"></i> Login
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        const getGreeting = () => {
+            const now = new Date();
+            const hours = now.getHours();
+
+            let greeting;
+            if (hours >= 5 && hours < 12) {
+                greeting = 'Selamat Pagi';
+            } else if (hours >= 12 && hours < 17) {
+                greeting = 'Selamat Siang';
+            } else if (hours >= 17 && hours < 20) {
+                greeting = 'Selamat Sore';
+            } else {
+                greeting = 'Selamat Malam';
+            }
+
+            return greeting;
+        }
+
+        const dynamicText = document.querySelector('.typing-text');
+        const cursor = document.querySelector('.cursor');
+        const words = [getGreeting(), 'Silahkan Login', 'Your Assistant'];
+
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        const typeEffect = () => {
+            const currentWord = words[wordIndex];
+            const currentChar = currentWord.substring(0, charIndex);
+            dynamicText.innerHTML = currentChar;
+            dynamicText.classList.add("stop-blinking");
+
+            if (!isDeleting && charIndex < currentWord.length) {
+                charIndex++;
+                setTimeout(typeEffect, 200);
+            } else if (isDeleting && charIndex > 0) {
+                charIndex--;
+                setTimeout(typeEffect, 100);
+            } else {
+                isDeleting = !isDeleting;
+                dynamicText.classList.remove("stop-blinking");
+                wordIndex = !isDeleting ? (wordIndex + 1) % words.length : wordIndex;
+                setTimeout(typeEffect, 1200);
+            }
+        }
+
+        typeEffect();
+
+
+        const form = document.getElementById('loginForm');
+        const recaptchaAlert = document.getElementById('recaptchaAlert');
+
+        const onSubmitForm = (event) => {
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                recaptchaAlert.style.display = 'block';
+                event.preventDefault();
+            } else {
+                recaptchaAlert.style.display = 'none';
+            }
+        }
+
+        form.addEventListener('submit', onSubmitForm);
+    </script>
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+</body>
+
+</html>
